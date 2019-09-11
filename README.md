@@ -27,6 +27,6 @@ Designed and built by the following developer team:
 
 Maintained by Brian Fitzgerald
 
-Email: brianjfitzgerald@gmail.com
+Email: ryan.t.jae@gmail.com
 
 Copyright &#169; 2018
