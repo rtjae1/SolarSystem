@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Journey Through the Solar System</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+
+    <!-- chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+    <link rel="icon" type="image/png" href="assets/images/planet-favicon.png">
+
+</head>
+
+<body>
+
+    <header>Journey Through the Solar System</header>
+    <p>Click on a celestial body to learn more about it!</p>
+
+    <!-- PIC OF DAY MODAL -->
+    <!-- ====================================================================== -->
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#picModal" id="picture-of-day">Click
+        for NASA's Pic of the Day!</button>
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="picModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">NASA Picture of the Day</h4>
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                </div>
+                <div class="modal-body">
+                    <div id="pic-container"></div>
+                    <div id="pic-caption"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VISITORS FROM EARTH MODAL -->
+    <!-- ====================================================================== -->
+    <div class="row">
+        <div class="col-md-12" id="input-fields">
+            <div><input type="text" placeholder="Name" id="name-input"></div>
+            <div><input type="text" placeholder="Age" id="age-input" onkeypress="return isInputNumber(event)"></div>
+        </div>
+    </div>
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#tableModal" id="visitor">Visitors
+        From Earth</button>
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="tableModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">How Old Are You On Each Planet (in Earth Years)?</h4>
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped table-dark" id="planet-age-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Earth</th>
+                                <th scope="col">Mercury</th>
+                                <th scope="col">Venus</th>
+                                <th scope="col">Mars</th>
+                                <th scope="col">Jupiter</th>
+                                <th scope="col">Saturn</th>
+                                <th scope="col">Uranus</th>
+                                <th scope="col">Neptune</th>
+                                <th scope="col">Pluto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLANET MODAL -->
+    <!-- ====================================================================== -->
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="planetModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Celestial Data</h4>
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                </div>
+                <div class="modal-body" id="planet-card">
+                    <div class="loading-gif"></div>
+                    <h2 id="planet-title"></h2>
+                    <div id="planet-day-length"></div>
+                    <div id="planet-year-length"></div>
+                    <div id="planet-distance-from-sun"></div>
+                    <div id="planet-mass"></div>
+                    <div id="planet-temp"></div>
+                    <div id="planet-radius"></div>
+                    <div id="planet-moons"></div>
+                </div>
+                <canvas id="chart"></canvas>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="close-button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLUTO MODAL -->
+    <!-- ====================================================================== -->
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="plutoModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Celestial Data</h4>
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                </div>
+                <div class="modal-body" id="pluto-card">
+                    <div class="loading-gif"></div>
+                    <h2 id="pluto-title"></h2>
+                    <div id="pluto-day-length"></div>
+                    <div id="pluto-year-length"></div>
+                    <div id="pluto-distance-from-sun"></div>
+                    <div id="pluto-mass"></div>
+                    <div id="pluto-temp"></div>
+                    <div id="pluto-radius"></div>
+                    <div id="pluto-moons"></div>
+                </div>
+                <canvas id="plutoChart"></canvas>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="close-button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUN MODAL -->
+    <!-- ====================================================================== -->
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="sunModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Celestial Data</h4>
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                </div>
+                <div class="modal-body">
+                    <div class="loading-gif"></div>
+                    <h2 id="sun-title"></h2>
+                    <div id="sun-distance-from-earth"></div>
+                    <div id="sun-temp"></div>
+                    <div id="sun-age"></div>
+                    <div id="sun-lifespan"></div>
+                </div>
+                <canvas id="sunChart"></canvas>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Planet images -->
+    <!-- ====================================================================== -->
+    <div class="row">
+        <div class="col-md-12" id="planet-row">
+            <figure id="sun-figure">
+                <img src="assets/images/sun.png" class="grow" id="sun" data-toggle="modal" data-target="#sunModal">
+                <figcaption>Sun</figcaption>
+            </figure>
+            <figure id="mercury-figure">
+                <img src="assets/images/mercury.png" class="planet grow" id="mercury" data-toggle="modal" data-target="#planetModal">
+                <figcaption>Mercury</figcaption>
+            </figure>
+            <figure id="venus-figure">
+                <img src="assets/images/venus.png" class="planet grow" id="venus" data-toggle="modal" data-target="#planetModal">
+                <figcaption>Venus</figcaption>
+            </figure>
+            <figure id="earth-figure">
+                <img src="assets/images/earth.png" class="planet grow" id="earth" data-toggle="modal" data-target="#planetModal">
+                <figcaption>Earth</figcaption>
+            </figure>
+            <figure id="mars-figure">
+                <img src="assets/images/mars.png" class="planet grow" id="mars" data-toggle="modal" data-target="#planetModal">
+                <figcaption>Mars</figcaption>
+            </figure>
+            <figure id="jupiter-figure">
+                <img src="assets/images/jupiter.png" class="planet grow" id="jupiter" data-toggle="modal" data-target="#planetModal">
+                <figcaption>Jupiter</figcaption>
+            </figure>
+            <figure id="saturn-figure">
+                <img src="assets/images/saturn.png" class="planet grow" id="saturn" data-toggle="modal" data-target="#planetModal">
+                <figcaption>Saturn</figcaption>
+            </figure>
+            <figure id="uranus-figure">
+                <img src="assets/images/uranus.png" class="planet grow" id="uranus" data-toggle="modal" data-target="#planetModal">
+                <figcaption>Uranus</figcaption>
+            </figure>
+            <figure id="neptune-figure">
+                <img src="assets/images/neptune.png" class="planet grow" id="neptune" data-toggle="modal" data-target="#planetModal">
+                <figcaption>Neptune</figcaption>
+            </figure>
+            <figure id="pluto-figure">
+                <img src="assets/images/pluto.png" class="pluto grow" id="pluto" data-toggle="modal" data-target="#plutoModal">
+                <figcaption>Pluto</figcaption>
+            </figure>
+        </div>
+    </div>
+
+    <!-- Javascript file -->
+    <script src="assets/javascript/app.js"></script>
+
+</body>
+
+</html>
